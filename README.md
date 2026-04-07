@@ -6,35 +6,32 @@
 
 ## 🌍 Problem Description
 
-Real-world AI agents operate under **noisy, incomplete, or misleading information**. Unlike controlled simulations with perfect observations, real environments have:
+Real-world AI systems, especially in industrial control, operate under **noisy, incomplete, or misleading telemetry**. Unlike perfect simulators, real sensors decay over time. 
 
-- Incorrect or biased signals
-- Hidden ground truth
-- Uncertainty at every step
-- Changing states (reality drift)
-
-This project simulates exactly that — agents must predict a hidden truth from distorted observations and calibrate their confidence accordingly.
+This environment simulates **Industrial Sensor Calibration**: An agent acts as a control system diagnosing the true temperature of a reactor core. It must identify this hidden truth from degraded, drifting sensors that occasionally experience dangerous electrical deception/interference.
 
 ---
 
 ## 🧠 Why This Environment Matters
 
-- **AI Hallucinations:** AI systems often produce confident but wrong outputs. This environment tests if an agent can accurately self-assess its confidence.
-- **Unreliable Real-World Data:** Dealing with noisy sensor feeds or financial datasets means learning when *not* to trust the data.
-- **Sim-to-Real Gap:** Simulators give perfect data, but reality throws deceptive anomalies.
-- **Uncertainty-Aware Agents:** The future of agentic AI requires systems that penalize overconfidence as much as inaccuracy.
+- **AI Hallucinations:** AI systems often produce confident but wrong outputs. This environment tests if an agent can accurately self-assess its confidence against noisy inputs.
+- **Unreliable Real-World Data:** Dealing with noisy sensor feeds or telemetry datasets means learning when *not* to trust the hardware.
+- **Sim-to-Real Gap:** Simulators give perfect data, but reality throws deceptive anomalies and physics drift.
+- **Uncertainty-Aware Agents:** The future of autonomous factories requires systems that penalize overconfidence as much as inaccuracy.
 
 ---
 
 ## 🧩 Environment Explanation
 
-The environment maintains a **hidden truth** (a float in [0, 1]) that the agent never directly sees. Instead, the agent receives a **noisy, possibly biased observation**.
+The environment maintains a **True Reactor Core Temperature** (a hidden float in [0, 1]) that the agent never directly sees. This temperature **imperceptibly drifts** over time based on simulated thermodynamic physics.
+
+Instead, the agent receives a **Sensor Telemetry Reading**, which is distorted by variable noise levels and random electrical spikes.
 
 The agent must:
-1. **Predict** the hidden truth
-2. **Express confidence** in that prediction (0 = no confidence, 1 = fully confident)
+1. **Predict** the true core temperature.
+2. **Express confidence** in that prediction (0 = no confidence, 1 = fully confident).
 
-A well-calibrated agent says "I'm 80% confident" and is actually right ~80% of the time.
+A well-calibrated agent filters out the deception and only reports high confidence when telemetry is historically stable.
 
 ---
 

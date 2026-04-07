@@ -7,10 +7,10 @@ from tasks import Task, TASK_MAP
 
 class MFDEEnvironment:
     """
-    Misleading Feedback Decision Environment (MFDE).
+    Misleading Feedback Decision Environment (MFDE) -> Industrial Sensor Calibration.
 
-    The agent sees a noisy/biased version of the hidden truth,
-    must predict the true value, and estimate its confidence.
+    The agent acts as a control system predicting true reactor core temperature 
+    based on noisy/biased telemetry from degraded sensors, and must estimate its confidence.
     """
 
     def __init__(self, task_name: str = "easy"):

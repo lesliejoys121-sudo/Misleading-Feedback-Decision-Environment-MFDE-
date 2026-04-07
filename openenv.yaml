@@ -1,14 +1,13 @@
 name: misleading-feedback-decision-environment
 version: "1.0.0"
 description: >
-  An AI environment where agents must make decisions under misleading feedback
-  and learn when not to trust what they see.
+  Industrial Sensor Calibration: An AI environment where an agent acts as a reactor control system diagnosing true core temperature from degraded, drifting, and deceptively noisy sensor telemetry. It teaches models uncertainty awareness and real-world noise filtration.
 tags:
   - openenv
   - uncertainty
   - calibration
-  - decision-making
-  - noisy-observations
+  - quality-control
+  - sensor-drift
 
 observation:
   type: object

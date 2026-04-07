@@ -38,12 +38,13 @@ def ask_model(client: OpenAI, observed_value: float, noise_level: float, step: i
     Returns {"prediction": float, "confidence": float}
     """
     prompt = (
-        f"You are an agent in the Misleading Feedback Decision Environment.\n"
+        f"You are the central control system agent for an Industrial Reactor.\n"
+        f"Task: Predict the True Reactor Core Temperature and indicate your Confidence.\n"
         f"Step: {step}\n"
-        f"Observed value: {observed_value:.4f}\n"
-        f"Noise level: {noise_level:.4f}\n\n"
-        f"The observed value is a noisy version of a hidden truth (range 0 to 1).\n"
-        f"High noise means observations can be misleading.\n\n"
+        f"Sensor Telemetry (Observed value): {observed_value:.4f}\n"
+        f"Known Sensor Noise Level: {noise_level:.4f}\n\n"
+        f"The telemetry is a corrupted/noisy version of the true optimal temperature (range 0 to 1).\n"
+        f"High noise or sudden spikes mean the sensors may be experiencing electrical deception/interference.\n\n"
         f"Respond ONLY with a JSON object:\n"
         f"{{\"prediction\": <float 0-1>, \"confidence\": <float 0-1>}}\n"
         f"No explanation. No markdown. Just the JSON."

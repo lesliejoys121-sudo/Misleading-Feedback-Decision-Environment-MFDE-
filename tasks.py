@@ -17,7 +17,7 @@ class Task:
 TASKS: List[Task] = [
     Task(
         name="easy",
-        description="Low noise, mostly accurate observations. Learn basic prediction.",
+        description="Low electrical noise, mostly accurate sensors. Learn basic temperature calibration.",
         noise_std=0.05,
         bias=0.0,
         drift_strength=0.0,
@@ -27,7 +27,7 @@ TASKS: List[Task] = [
     ),
     Task(
         name="medium",
-        description="Moderate noise, occasional misleading signals. Balance trust and correction.",
+        description="Moderate sensor noise, core draft, and occasional misleading telemetry. Balance trust and correction.",
         noise_std=0.20,
         bias=0.10,
         drift_strength=0.05,
@@ -37,7 +37,7 @@ TASKS: List[Task] = [
     ),
     Task(
         name="hard",
-        description="High noise + bias, observations frequently misleading. Learn to distrust environment.",
+        description="High noise + sensor bias, frequent electrical deception spikes. Learn to actively distrust telemetry.",
         noise_std=0.40,
         bias=0.30,
         drift_strength=0.10,
