@@ -26,6 +26,9 @@ def build_client() -> OpenAI:
     kwargs = {}
     if HF_TOKEN:
         kwargs["api_key"] = HF_TOKEN
+    # Provide a fallback key to avoid instantiation crash if no key is set
+    elif "OPENAI_API_KEY" not in os.environ:
+        kwargs["api_key"] = "dummy_key_for_testing"
     return OpenAI(**kwargs)
 
 
