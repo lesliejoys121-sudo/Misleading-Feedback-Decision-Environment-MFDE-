@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 from typing import Any, Dict, Optional
 
 from env import MFDEEnvironment
@@ -74,9 +74,11 @@ def reset(req: ResetRequest):
 @app.post("/step", response_model=StepResponse)
 def step(req: StepRequest):
     env = _get_env(req.task)
-    action = Action(prediction=req.prediction, confidence=req.confidence)
     try:
+        action = Action(prediction=req.prediction, confidence=req.confidence)
         obs, reward, done, info = env.step(action)
+    except ValidationError as e:
+        raise HTTPException(status_code=422, detail=e.errors())
     except RuntimeError as e:
         raise HTTPException(status_code=400, detail=str(e))
     return StepResponse(

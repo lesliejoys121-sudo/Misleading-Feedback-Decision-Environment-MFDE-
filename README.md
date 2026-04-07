@@ -11,8 +11,18 @@ Real-world AI agents operate under **noisy, incomplete, or misleading informatio
 - Incorrect or biased signals
 - Hidden ground truth
 - Uncertainty at every step
+- Changing states (reality drift)
 
 This project simulates exactly that — agents must predict a hidden truth from distorted observations and calibrate their confidence accordingly.
+
+---
+
+## 🧠 Why This Environment Matters
+
+- **AI Hallucinations:** AI systems often produce confident but wrong outputs. This environment tests if an agent can accurately self-assess its confidence.
+- **Unreliable Real-World Data:** Dealing with noisy sensor feeds or financial datasets means learning when *not* to trust the data.
+- **Sim-to-Real Gap:** Simulators give perfect data, but reality throws deceptive anomalies.
+- **Uncertainty-Aware Agents:** The future of agentic AI requires systems that penalize overconfidence as much as inaccuracy.
 
 ---
 
@@ -51,8 +61,9 @@ A well-calibrated agent says "I'm 80% confident" and is actually right ~80% of t
 
 ```
 accuracy        = 1 - |prediction - hidden_truth|
-calibration     = -|confidence - accuracy|
-reward          = clamp(accuracy + calibration, 0.0, 1.0)
+calibration     = 1 - |confidence - accuracy|
+reward          = 0.6 * accuracy + 0.4 * calibration
+reward          = clamp(reward, 0.0, 1.0)
 ```
 
 A perfect agent predicts accurately **and** expresses appropriate confidence.

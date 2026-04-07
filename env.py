@@ -94,10 +94,20 @@ class MFDEEnvironment:
 
     def _generate_values(self) -> Tuple[float, float]:
         """Generate a new hidden truth and its noisy observation."""
-        hidden = self._rng.uniform(0.0, 1.0)
+        if self._step_count == 0:
+            hidden = self._rng.uniform(0.0, 1.0)
+        else:
+            drift = self._rng.uniform(-self.task.drift_strength, self.task.drift_strength)
+            hidden = max(0.0, min(1.0, self._hidden_truth + drift))
+            
         noise = self._rng.gauss(0, self.task.noise_std)
         observed = hidden + noise + self.task.bias
-        # Clamp observed to [0, 1] range to avoid extreme outliers
+        
+        # Occasionally introduce deceptive observations
+        if self.task.deception_probability > 0 and self._rng.random() < self.task.deception_probability:
+            observed += self._rng.uniform(-0.3, 0.3)
+
+        # Clamp observed to [-1, 2] range to avoid extreme outliers
         observed = max(-1.0, min(2.0, observed))
         return round(hidden, 4), round(observed, 4)
 
@@ -110,14 +120,14 @@ class MFDEEnvironment:
 
     def _compute_reward(self, action: Action) -> Reward:
         accuracy = max(0.0, 1.0 - abs(action.prediction - self._hidden_truth))
-        calibration_penalty = -abs(action.confidence - accuracy)
-        raw_reward = accuracy + calibration_penalty
+        calibration = max(0.0, 1.0 - abs(action.confidence - accuracy))
+        raw_reward = 0.6 * accuracy + 0.4 * calibration
         final_reward = float(max(0.0, min(1.0, raw_reward)))
 
         return Reward(
             value=round(final_reward, 4),
             accuracy_reward=round(accuracy, 4),
-            calibration_penalty=round(calibration_penalty, 4),
+            calibration_penalty=round(calibration, 4), # kept field name for model compatibility
             actual_accuracy=round(accuracy, 4),
         )
 

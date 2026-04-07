@@ -8,6 +8,8 @@ class Task:
     description: str
     noise_std: float        # Standard deviation of random noise
     bias: float             # Systematic bias added to observations
+    drift_strength: float   # Max drift per step
+    deception_probability: float # Probability of misleading spike
     max_steps: int
     seed: int
 
@@ -18,6 +20,8 @@ TASKS: List[Task] = [
         description="Low noise, mostly accurate observations. Learn basic prediction.",
         noise_std=0.05,
         bias=0.0,
+        drift_strength=0.0,
+        deception_probability=0.0,
         max_steps=10,
         seed=42,
     ),
@@ -26,6 +30,8 @@ TASKS: List[Task] = [
         description="Moderate noise, occasional misleading signals. Balance trust and correction.",
         noise_std=0.20,
         bias=0.10,
+        drift_strength=0.05,
+        deception_probability=0.20,
         max_steps=10,
         seed=123,
     ),
@@ -34,6 +40,8 @@ TASKS: List[Task] = [
         description="High noise + bias, observations frequently misleading. Learn to distrust environment.",
         noise_std=0.40,
         bias=0.30,
+        drift_strength=0.10,
+        deception_probability=0.40,
         max_steps=10,
         seed=999,
     ),

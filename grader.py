@@ -20,14 +20,14 @@ def grade(
 
     for pred, truth, conf in zip(predictions, hidden_truths, confidences):
         accuracy = max(0.0, 1.0 - abs(pred - truth))
-        calibration_error = abs(conf - accuracy)
+        calibration = max(0.0, 1.0 - abs(conf - accuracy))
         total_accuracy += accuracy
-        total_calibration += calibration_error
+        total_calibration += calibration
 
     n = len(predictions)
     avg_accuracy = total_accuracy / n
-    avg_calibration_error = total_calibration / n
+    avg_calibration = total_calibration / n
 
-    # Score: average accuracy minus calibration error, clamped to [0, 1]
-    score = avg_accuracy - avg_calibration_error
+    # Score: 0.6 accuracy + 0.4 calibration, clamped to [0, 1]
+    score = 0.6 * avg_accuracy + 0.4 * avg_calibration
     return float(max(0.0, min(1.0, score)))
