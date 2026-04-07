@@ -1,0 +1,66 @@
+name: misleading-feedback-decision-environment
+version: "1.0.0"
+description: >
+  An AI environment where agents must make decisions under misleading feedback
+  and learn when not to trust what they see.
+tags:
+  - openenv
+  - uncertainty
+  - calibration
+  - decision-making
+  - noisy-observations
+
+observation:
+  type: object
+  fields:
+    observed_value:
+      type: float
+      description: Noisy or biased version of the hidden truth (may be outside [0,1] due to noise)
+    noise_level:
+      type: float
+      description: Standard deviation of noise applied in this task
+    step:
+      type: int
+      description: Current step within the episode
+
+action:
+  type: object
+  fields:
+    prediction:
+      type: float
+      description: Agent's estimate of the true hidden value (should be in [0, 1])
+    confidence:
+      type: float
+      description: Agent's confidence in its prediction (must be in [0, 1])
+
+reward:
+  type: float
+  range: [0.0, 1.0]
+  description: >
+    Combination of accuracy reward and confidence calibration penalty.
+    reward = clamp(accuracy + calibration_penalty, 0, 1)
+
+tasks:
+  - name: easy
+    description: Low noise (std=0.05), no bias. Mostly accurate observations.
+    max_steps: 10
+    seed: 42
+
+  - name: medium
+    description: Moderate noise (std=0.20), small bias (0.10). Occasional misleading signals.
+    max_steps: 10
+    seed: 123
+
+  - name: hard
+    description: High noise (std=0.40), large bias (0.30). Observations frequently misleading.
+    max_steps: 10
+    seed: 999
+
+endpoints:
+  reset: POST /reset
+  step: POST /step
+  state: GET /state
+
+docker:
+  port: 7860
+  command: python app.py
